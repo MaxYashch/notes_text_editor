@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import ItemList from "./components/ItemList";
 
 class App extends React.Component {
     constructor(props) {
@@ -12,6 +13,44 @@ class App extends React.Component {
                 key: "",
             },
         };
+        this.handleInput = this.handleInput.bind(this);
+        this.addItem = this.addItem.bind(this);
+        this.deleteItem = this.deleteItem.bind(this);
+    }
+
+    handleInput(e) {
+        this.setState({
+            currentItem: {
+                text: e.target.value,
+                key: Date.now(),
+            },
+        });
+    }
+
+    addItem(e) {
+        e.preventDefault();
+        const newItem = this.state.currentItem;
+        console.log(newItem);
+        if (newItem.text !== "") {
+            const newItems = [...this.state.items, newItem];
+            this.setState({
+                items: newItems,
+                currentItem: {
+                    text: "",
+                    key: "",
+                },
+            });
+        }
+        console.log(this.state.items);
+    }
+
+    deleteItem(key) {
+        const filteredItems = this.state.items.filter(
+            (item) => item.key !== key
+        );
+        this.setState({
+            items: filteredItems,
+        });
     }
 
     render() {
@@ -28,6 +67,10 @@ class App extends React.Component {
                         <button type="submit">Add note</button>
                     </form>
                 </header>
+                <ItemList
+                    items={this.state.items}
+                    deleteItem={this.deleteItem}
+                />
             </div>
         );
     }

@@ -8,7 +8,14 @@ class ItemList extends React.Component {
         const listItems = items.map((item) => (
             <div className="list">
                 <p key={item.key}>
-                    {item.text}
+                    <input
+                        type="text"
+                        value={item.text}
+                        key={item.key}
+                        onChange={(e) =>
+                            this.props.editItem(e.target.value, item.key)
+                        }
+                    />
 
                     <span
                         className="faicons"

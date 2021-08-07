@@ -16,6 +16,7 @@ class App extends React.Component {
         this.handleInput = this.handleInput.bind(this);
         this.addItem = this.addItem.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
+        this.editItem = this.editItem.bind(this);
     }
 
     handleInput(e) {
@@ -53,6 +54,18 @@ class App extends React.Component {
         });
     }
 
+    editItem(text, key) {
+        const newItem = this.state.items;
+        newItem.map((item) => {
+            if (item.key === key) {
+                item.text = text;
+            }
+        });
+        this.setState({
+            items: newItem,
+        });
+    }
+
     render() {
         return (
             <div className="App">
@@ -70,6 +83,7 @@ class App extends React.Component {
                 <ItemList
                     items={this.state.items}
                     deleteItem={this.deleteItem}
+                    editItem={this.editItem}
                 />
             </div>
         );

@@ -56,7 +56,7 @@ class App extends React.Component {
 
     editItem(text, key) {
         const newItem = this.state.items;
-        newItem.map((item) => {
+        newItem.forEach((item) => {
             if (item.key === key) {
                 item.text = text;
             }

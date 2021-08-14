@@ -43,22 +43,35 @@ class ItemList extends React.Component {
 //     const items = props.items;
 //     const listItems = items.map((item) => (
 //         <div className="list">
-//             <p key={item.key}>
-//                 {item.text}
+// <p key={item.key}>
+//     <input
+//         type="text"
+//         value={item.text}
+//         key={item.key}
+//         onChange={(e) =>
+//             props.editItem(e.target.value, item.key)
+//         }
+//     />
 
-//                 <span
-//                     className="faicons"
-//                     onClick={() => {
-//                         props.deleteItem(item.key);
-//                     }}
-//                 >
-//                     <i className="far fa-trash-alt"></i>
-//                 </span>
-//             </p>
+//     <span
+//         className="faicons"
+//         onClick={() => {
+//             props.deleteItem(item.key);
+//         }}
+//     >
+//     <i className="far fa-trash-alt"></i>
+// </span>
+// </p>//
 //         </div>
 //     ));
 
-//     return <div>{listItems}</div>;
+//    return (
+//          <div>
+//              <FlipMove duration={300} easing="ease-in-out">
+//                  {listItems}
+//              </FlipMove>
+//          </div>
+//      )
 // }
 
 export default ItemList;

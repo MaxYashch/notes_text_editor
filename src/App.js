@@ -18,23 +18,7 @@ class App extends React.Component {
         this.deleteItem = this.deleteItem.bind(this);
         this.editItem = this.editItem.bind(this);
         this.saveStateToLocalStorage = this.saveStateToLocalStorage.bind(this);
-    }
-
-    saveStateToLocalStorage = () => {
-        localStorage.setItem("state", JSON.stringify(this.state.items));
-    };
-
-    // Fetch data from local storage
-    getStateFromLocalStorage = () => {
-        let data = localStorage.getItem("state");
-        if (data !== undefined) {
-            this.setState(JSON.parse(data));
-        }
-    };
-
-    componentDidMount() {
-        // Fetch data from local storage
-        this.getStateFromLocalStorage();
+        this.saveJSON = this.saveJSON.bind(this);
     }
 
     handleInput(e) {
@@ -84,6 +68,39 @@ class App extends React.Component {
         });
     }
 
+    saveStateToLocalStorage = () => {
+        localStorage.setItem("state", JSON.stringify(this.state.items));
+    };
+
+    getStateFromLocalStorage = () => {
+        let data = localStorage.getItem("state");
+        if (data !== undefined) {
+            this.setState(JSON.parse(data));
+        }
+    };
+
+    componentDidMount() {
+        this.getStateFromLocalStorage();
+    }
+
+    saveJSON = (filename) => {
+        const fileData = JSON.stringify(this.state.items);
+        // const fileData = JSON.stringify(localStorage.getItem("state"));
+        const blob = new Blob([fileData], {
+            type: "text/plain",
+        });
+        // const blob = new Blob(
+        //     [JSON.stringify(localStorage.getItem("state"), null, 2)],
+        //     { type: "application/json" }
+        // );
+        // const blob = new Blob([JSON.stringify(obj, null, 2)], {type : 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.download = `${filename}.json`;
+        link.href = url;
+        link.click();
+    };
+
     render() {
         return (
             <div className="App">
@@ -101,6 +118,9 @@ class App extends React.Component {
                             onClick={this.saveStateToLocalStorage}
                         >
                             LocalStrg
+                        </button>
+                        <button type="button" onClick={this.saveJSON}>
+                            to JSON
                         </button>
                     </form>
                 </header>

@@ -17,6 +17,24 @@ class App extends React.Component {
         this.addItem = this.addItem.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
         this.editItem = this.editItem.bind(this);
+        this.saveStateToLocalStorage = this.saveStateToLocalStorage.bind(this);
+    }
+
+    saveStateToLocalStorage = () => {
+        localStorage.setItem("state", JSON.stringify(this.state.items));
+    };
+
+    // Fetch data from local storage
+    getStateFromLocalStorage = () => {
+        let data = localStorage.getItem("state");
+        if (data !== undefined) {
+            this.setState(JSON.parse(data));
+        }
+    };
+
+    componentDidMount() {
+        // Fetch data from local storage
+        this.getStateFromLocalStorage();
     }
 
     handleInput(e) {
@@ -31,7 +49,7 @@ class App extends React.Component {
     addItem(e) {
         e.preventDefault();
         const newItem = this.state.currentItem;
-        console.log(newItem);
+        // console.log(newItem);
         if (newItem.text !== "") {
             const newItems = [...this.state.items, newItem];
             this.setState({
@@ -42,7 +60,7 @@ class App extends React.Component {
                 },
             });
         }
-        console.log(this.state.items);
+        // console.log(this.state.items);
     }
 
     deleteItem(key) {
@@ -78,6 +96,12 @@ class App extends React.Component {
                             onChange={this.handleInput}
                         />
                         <button type="submit">Add note</button>
+                        <button
+                            type="button"
+                            onClick={this.saveStateToLocalStorage}
+                        >
+                            LocalStrg
+                        </button>
                     </form>
                 </header>
                 <ItemList

@@ -17,7 +17,6 @@ class App extends React.Component {
         this.addItem = this.addItem.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
         this.editItem = this.editItem.bind(this);
-        this.saveStateToLocalStorage = this.saveStateToLocalStorage.bind(this);
         this.saveJSON = this.saveJSON.bind(this);
     }
 
@@ -33,7 +32,6 @@ class App extends React.Component {
     addItem(e) {
         e.preventDefault();
         const newItem = this.state.currentItem;
-        // console.log(newItem);
         if (newItem.text !== "") {
             const newItems = [...this.state.items, newItem];
             this.setState({
@@ -44,7 +42,6 @@ class App extends React.Component {
                 },
             });
         }
-        // console.log(this.state.items);
     }
 
     deleteItem(key) {
@@ -68,38 +65,31 @@ class App extends React.Component {
         });
     }
 
-    saveStateToLocalStorage = () => {
-        localStorage.setItem("state", JSON.stringify(this.state.items));
-    };
-
-    getStateFromLocalStorage = () => {
-        let data = localStorage.getItem("state");
-        if (data !== undefined) {
-            this.setState(JSON.parse(data));
-        }
-    };
-
-    componentDidMount() {
-        this.getStateFromLocalStorage();
-    }
-
     saveJSON = (filename) => {
         const fileData = JSON.stringify(this.state.items);
         // const fileData = JSON.stringify(localStorage.getItem("state"));
         const blob = new Blob([fileData], {
             type: "text/plain",
         });
-        // const blob = new Blob(
-        //     [JSON.stringify(localStorage.getItem("state"), null, 2)],
-        //     { type: "application/json" }
-        // );
-        // const blob = new Blob([JSON.stringify(obj, null, 2)], {type : 'application/json'});
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.download = `${filename}.json`;
         link.href = url;
         link.click();
     };
+
+    componentDidUpdate() {
+        setTimeout(() => {
+            localStorage.setItem("state", JSON.stringify(this.state.items));
+        }, 100);
+    }
+
+    componentDidMount() {
+        const data = JSON.parse(localStorage.getItem("state"));
+        if (data !== null) {
+            this.setState({ items: data });
+        }
+    }
 
     render() {
         return (
@@ -113,12 +103,6 @@ class App extends React.Component {
                             onChange={this.handleInput}
                         />
                         <button type="submit">Add note</button>
-                        <button
-                            type="button"
-                            onClick={this.saveStateToLocalStorage}
-                        >
-                            LocalStrg
-                        </button>
                         <button type="button" onClick={this.saveJSON}>
                             to JSON
                         </button>

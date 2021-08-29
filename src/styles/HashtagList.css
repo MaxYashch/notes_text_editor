@@ -1,0 +1,37 @@
+.listHash {
+  color: white;
+  width: 16vw;
+  background-color: rgba(255, 255, 0, 0.83);
+  height: 5vw;
+  margin: 5px 4px;
+  border-radius: 10px;
+  display: inline-block;
+}
+
+.listHash p {
+  padding: 13px;
+  position: relative;
+}
+
+.listHash p span {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.faicons {
+  margin: 0 5px;
+  font-size: 15px;
+}
+
+.listHash p input {
+  background-color: transparent;
+  border: 0;
+  color: white;
+}
+
+.listHash p input:focus {
+  outline: none;
+}
+/*# sourceMappingURL=HashtagList.css.map */

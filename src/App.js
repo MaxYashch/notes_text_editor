@@ -1,6 +1,13 @@
 import React from "react";
 import "./styles/App.css";
 import ItemList from "./components/ItemList";
+import HashtagList from "./components/HashtagList";
+// import SimpleHashtagEditor from "./components/MyEditor";
+// import "@draft-js-plugins/hashtag/lib/plugin.css";
+
+// import Editor, { createEditorStateWithText } from "@draft-js-plugins/editor";
+// import createHashtagPlugin from "@draft-js-plugins/hashtag";
+// import editorStyles from "./components/editorStyles.module.css";
 
 class App extends React.Component {
     constructor(props) {
@@ -8,6 +15,7 @@ class App extends React.Component {
 
         this.state = {
             items: [],
+            hashtags: [],
             currentItem: {
                 text: "",
                 key: "",
@@ -16,8 +24,33 @@ class App extends React.Component {
         this.handleInput = this.handleInput.bind(this);
         this.addItem = this.addItem.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
+        this.deleteHash = this.deleteHash.bind(this);
         this.editItem = this.editItem.bind(this);
         this.saveJSON = this.saveJSON.bind(this);
+        this.getHashtag = this.getHashtag.bind(this);
+    }
+
+    getHashtag() {
+        const newItem = this.state.currentItem;
+        console.log(newItem.text);
+        if (newItem.text !== "" && newItem.text.includes("#")) {
+            const newHash = newItem.text
+                .split(" ")
+                .filter((item) => item[0] === "#" && item[1] !== undefined);
+
+            const newHashtag = {
+                hashtag: newHash,
+                key: Date.now(),
+            };
+            const newHashtags = [...this.state.hashtags, newHashtag];
+            this.setState({
+                hashtags: newHashtags,
+            });
+        }
+        console.log(this.state.hashtags);
+        // return str
+        //     .split(" ")
+        //     .filter((item) => item[0] === "#" && item[1] !== undefined);
     }
 
     handleInput(e) {
@@ -42,6 +75,7 @@ class App extends React.Component {
                 },
             });
         }
+        console.log(this.state.items);
     }
 
     deleteItem(key) {
@@ -50,6 +84,15 @@ class App extends React.Component {
         );
         this.setState({
             items: filteredItems,
+        });
+    }
+
+    deleteHash(key) {
+        const filteredHashes = this.state.hashtags.filter(
+            (hash) => hash.key !== key
+        );
+        this.setState({
+            hashtags: filteredHashes,
         });
     }
 
@@ -82,18 +125,29 @@ class App extends React.Component {
         setTimeout(() => {
             localStorage.setItem("state", JSON.stringify(this.state.items));
         }, 100);
+        setTimeout(() => {
+            localStorage.setItem(
+                "hashtags",
+                JSON.stringify(this.state.hashtags)
+            );
+        }, 100);
     }
 
     componentDidMount() {
         const data = JSON.parse(localStorage.getItem("state"));
+        const dataHash = JSON.parse(localStorage.getItem("hashtags"));
         if (data !== null) {
             this.setState({ items: data });
+        }
+        if (dataHash !== null) {
+            this.setState({ hashtags: dataHash });
         }
     }
 
     render() {
         return (
             <div className="App">
+                {/* <SimpleHashtagEditor /> */}
                 <header>
                     <form id="todo" onSubmit={this.addItem}>
                         <input
@@ -102,12 +156,19 @@ class App extends React.Component {
                             value={this.state.currentItem.text}
                             onChange={this.handleInput}
                         />
-                        <button type="submit">Add note</button>
+                        <button type="submit" onClick={this.getHashtag}>
+                            Add note
+                        </button>
                         <button type="button" onClick={this.saveJSON}>
                             to JSON
                         </button>
                     </form>
                 </header>
+                <HashtagList
+                    items={this.state.items}
+                    hashtags={this.state.hashtags}
+                    deleteHash={this.deleteHash}
+                />
                 <ItemList
                     items={this.state.items}
                     deleteItem={this.deleteItem}

@@ -2,12 +2,6 @@ import React from "react";
 import "./styles/App.css";
 import ItemList from "./components/ItemList";
 import HashtagList from "./components/HashtagList";
-// import SimpleHashtagEditor from "./components/MyEditor";
-// import "@draft-js-plugins/hashtag/lib/plugin.css";
-
-// import Editor, { createEditorStateWithText } from "@draft-js-plugins/editor";
-// import createHashtagPlugin from "@draft-js-plugins/hashtag";
-// import editorStyles from "./components/editorStyles.module.css";
 
 class App extends React.Component {
     constructor(props) {

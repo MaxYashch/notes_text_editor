@@ -8,14 +8,7 @@ class HashtagList extends React.Component {
         const listHashtags = hashtags.map((hash) => (
             <div className="listHash">
                 <p key={hash.key}>
-                    <input
-                        type="text"
-                        value={hash.hashtag}
-                        key={hash.key}
-                        // onChange={(e) =>
-                        //     this.props.editItem(e.target.value, hash.key)
-                        // }
-                    />
+                    <input type="text" value={hash.hashtag} key={hash.key} />
 
                     <span
                         className="faicons"
